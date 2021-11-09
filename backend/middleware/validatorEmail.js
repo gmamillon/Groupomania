@@ -1,6 +1,6 @@
 module.exports = (req, res, next) => {
     const regexEmail = /^([\w-\.]+)@((?:[\w]+\.)+)([a-zA-Z]{2,4})/i;
-    const regexPassword = /^[a-zA-Z0-9-' éèàêûñçàôëù]{8,}$/;
+    const regexPassword = /^[a-zA-Z0-9-' éèàêûñçàôëù]{8,64}$/;
     if (regexEmail.test(req.body.email) && regexPassword.test(req.body.password)) {
         next();
     } else {

@@ -1,22 +1,10 @@
 const express = require('express');
-const mysql = require('mysql');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
 const app = express();
 const path = require('path');
 const userRoutes = require('./routes/user');
-
-const db = mysql.createConnection({
-    database: "groupomania",
-    host: "localhost",
-    user: "root",
-    password: "l5u6f5f6yrrn"
-});
-
-db.connect(function(err) {
-    if (err) throw err;
-    console.log("Connected!");
-});
+const postRoutes = require('./routes/post');
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -25,11 +13,22 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(bodyParser.json());
+app.use(express.json());
+app.use(express.urlencoded({
+  extended: true
+}))
 app.use(helmet());
 
-app.use('/images', express.static(path.join(__dirname, 'images')));
+app.use('/medias', express.static(path.join(__dirname, 'medias')));
 
 app.use('/api/auth', userRoutes);
+app.use('/api/post', postRoutes);
+
+const db = require("./models");
+db.sequelize.sync({ force: true }).then(() => {
+  console.log("Drop and re-sync db.");
+  require('./config/admin');
+});
+
 
 module.exports = app;
