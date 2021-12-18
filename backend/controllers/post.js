@@ -28,6 +28,18 @@ exports.newPost = async (req, res) => {
 exports.getPosts = async (req, res) => {
     try {
         const latestPost = await db.Post.findAll({ limit: 20, order: [[ "createdAt", "DESC" ]]});
+        for (let i = 0; i < latestPost.length; i++) {
+            const mediaUrl = await db.Media.findAll({ where: { post_id: latestPost[i].dataValues.id}});
+            const replies = await db.Reply.findAll({ where: { post_id: latestPost[i].dataValues.id}});
+            const user = await db.User.findOne({ where: { id: latestPost[i].dataValues.user_id}});
+            latestPost[i].media = mediaUrl;
+            for (let j = 0; j < replies.length; j++) {
+                const replyUser = await db.User.findOne({ where: { id: replies[j].dataValues.user_id}});
+                replies[j].dataValues.user = replyUser;
+            }
+            latestPost[i].dataValues.replies = replies;
+            latestPost[i].dataValues.user = user;
+        }
         res.status(200).json({latestPost});
     } catch (error) {
         console.log(error)
@@ -37,9 +49,21 @@ exports.getPosts = async (req, res) => {
 
 exports.getPostsFrom = async (req, res) => {
     try {
-        const latestPostFrom = await db.Post.findAll({ limit: 20, order: [[ "createdAt", "DESC" ]],
+        const postFrom = await db.Post.findAll({ order: [[ "createdAt", "DESC" ]],
         where: { user_id: req.params.id } });
-        res.status(200).json({latestPostFrom});
+        for (let i = 0; i < postFrom.length; i++) {
+            const mediaUrl = await db.Media.findAll({ where: { post_id: postFrom[i].dataValues.id}});
+            const replies = await db.Reply.findAll({ where: { post_id: postFrom[i].dataValues.id}});
+            const user = await db.User.findOne({ where: { id: postFrom[i].dataValues.user_id}});
+            postFrom[i].media = mediaUrl;
+            for (let j = 0; j < replies.length; j++) {
+                const replyUser = await db.User.findOne({ where: { id: replies[j].dataValues.user_id}});
+                replies[j].dataValues.user = replyUser;
+            }
+            postFrom[i].dataValues.replies = replies;
+            postFrom[i].dataValues.user = user;
+        }
+        res.status(200).json({postFrom});
     } catch (error) {
         res.status(401).json({ error })
     }

@@ -14,7 +14,9 @@ module.exports = (sequelize, DataTypes) => {
                 allowNull: false
             },
             ppurl: {
-                type: DataTypes.STRING
+                type: DataTypes.STRING,
+                allowNull: false,
+                defaultValue: "http://localhost:3000/medias/default_picture.jpg"
             },
             bio: {
                 type: DataTypes.STRING

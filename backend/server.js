@@ -1,6 +1,5 @@
 const http = require('http');
 const app = require('./app');
-const db = require("./models/index");
 
 const normalizePort = val => {
     const port = parseInt(val, 10);
@@ -44,6 +43,5 @@ server.on('listening', () => {
     const bind = typeof address === 'string' ? 'pipe ' + address : 'port ' + port;
     console.log('Listening on ' + bind);
 });
-            
+
 server.listen(port);
-            

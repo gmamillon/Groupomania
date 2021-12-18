@@ -16,7 +16,7 @@ exports.signup = async (req, res, next) => {
             ppurl: req.body.ppurl,
             bio: req.body.bio
     }});
-    if (!created) return res.status(400).json({ message: "Adresse e-mail déjà attribuée." })
+    if (!created) return res.status(401).json({ error: "Adresse e-mail déjà utilisée." })
     } catch (err) { 
         res.status(500).json({ err });
         console.log(err);
@@ -34,8 +34,9 @@ exports.login = async (req, res) => {
     if (!valid) {
         return res.status(401).json({ error: "Mot de passe incorrect."});
     }
+    delete user.dataValues.password;
     res.status(200).json({
-        userId: user.id,
+        user: user,
         token: jwt.sign(
             { userId: user.id},
             'secret',
@@ -45,26 +46,38 @@ exports.login = async (req, res) => {
 };
 
 exports.modify = async (req, res) => {
-    const ppurl = "";
-    if (req.files !== undefined) { ppurl = `${req.protocol}://${req.get('host')}/medias/${req.files[i].filename}`; }
-    else { ppurl = null; }
-    const user = await db.User.update({ 
-        name: req.body.name,
-        email: req.body.email,
-        ppurl: ppurl,
-        bio: req.body.bio }, 
-        { where: { id: req.body.userId }});
-    if (user === null) {
-        return res.status(400).json({ err });
+    try {
+        const userBefore = await db.User.findOne({ where: { id: req.body.userId }});
+        var ppurl = userBefore.dataValues.ppurl;
+        if (req.files[0] !== undefined) {
+            const filename = ppurl.split('medias/')[1];
+            if (filename !== "default_picture.jpg") {
+                fs.unlink(`medias/${filename}`, () => {
+                    console.log(filename)
+                })
+            }
+            ppurl = `${req.protocol}://${req.get('host')}/medias/${req.files[0].filename}`; 
+        }
+        const user = await db.User.update({ 
+            name: req.body.name,
+            email: req.body.email,
+            ppurl: ppurl,
+            bio: req.body.bio }, 
+            { where: { id: req.body.userId }});
+        if (user === null) {
+            return res.status(400).json({ err });
+        }
+        const userAfter = await db.User.findOne({ where: { id: req.body.userId }});
+        res.status(201).json({ userAfter });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ err });
     }
-    res.status(201).json({ message: "Votre profile a été modifié avec succés !" });
 }
 
-exports.getUser = async (req, res) => {
-    const user = await db.User.findAll({
-        where: { name: {
-            [Op.like]: req.body.name + "%"
-        }}
+exports.getOne = async (req, res) => {
+    const user = await db.User.findOne({
+        where: { id: req.params.id}
     });
     if (user === null) {
         return res.status(201).json({ message: "Aucun résultat" })
@@ -72,10 +85,24 @@ exports.getUser = async (req, res) => {
     res.status(201).json({ user });
 }
 
+exports.getUsers = async (req, res) => {
+    const users = await db.User.findAll({
+        where: { 
+            name: {
+                [Op.substring] : req.body.name,
+            }
+        }
+    });
+    if (users === null) {
+        return res.status(201).json({ message: "Aucun résultat" })
+    }
+    res.status(201).json({ users });
+}
+
 exports.deleteUser = async (req, res, next) => {
     const isAdmin = await db.User.findOne({ where: { id: req.body.userId }});
-    const user = await db.User.findOne({ where: { email: req.body.email }});
-    if (isAdmin.admin === true || bcrypt.compare(req.body.password, user.password)) {
+    const user = await db.User.findOne({ where: { id: req.params.id }});
+    if (isAdmin.admin === true || isAdmin.id === user.id) {
         const posts = await db.Post.findAll({ where: {
             user_id: user.id
         }});
@@ -94,9 +121,12 @@ exports.deleteUser = async (req, res, next) => {
             await db.Post.destroy({ where: { id: posts[i].id }});
         }
         const pp = user.ppurl.split('medias/')[1];
-        fs.unlink(`medias/${pp}`, async ()=>{
-            await db.User.destroy({ where: { email: req.body.email }});
-        });
+        if (pp !== "default_picture.jpg") {
+            fs.unlink(`medias/${pp}`, () => {
+                console.log(pp)
+            })
+        }
+        await db.User.destroy({ where: { id: req.params.id }});
         return res.status(200).json({ message: 'Utilisateur supprimé !'});
     }
 };
