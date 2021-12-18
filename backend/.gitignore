@@ -1,0 +1,3 @@
+/node_modules/
+/medias/*
+!/backend/medias/default_picture.jpg
