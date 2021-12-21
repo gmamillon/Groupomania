@@ -25,7 +25,7 @@ app.use('/api/auth', userRoutes);
 app.use('/api/post', postRoutes);
 
 const db = require("./models");
-db.sequelize.sync({ force: true }).then(() => {
+db.sequelize.sync({ force: false }).then(() => {
   console.log("Drop and re-sync db.");
   require('./config/admin');
 });
