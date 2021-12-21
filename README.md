@@ -14,3 +14,14 @@ Dans le dossier backend executez les commandes suivantes dans l'ordre pour démar
 npm install
 
 npm start
+
+
+Frontend
+
+Enfin dans le dossier frontend executez les commandes suivantes :
+
+npm install
+
+npm run serve
+
+alller à localhost:8080 pour ouvrir l'application.
