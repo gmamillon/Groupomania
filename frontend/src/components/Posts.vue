@@ -28,8 +28,10 @@
             <Reply v-for="reply in post.replies" :key="reply.id" :reply="reply" @deleteReply="deleteReply"/>
         </div>
         <form class="post__reply">
-            <input :id="'reply' + post.id" type="text" placeholder="Votre réponse" class="post__reply__input">
-            <button class="post__reply__btn" @click.prevent="sendReply">Envoyer</button>
+            <label for="reply">réponse</label>
+            <input :id="'reply' + post.id" type="text" placeholder="Votre réponse" name="reply" class="post__reply__input">
+            <label for="btn">envoyer la réponse</label>
+            <button class="post__reply__btn" name="btn" @click.prevent="sendReply">Envoyer</button>
         </form>
     </div>
 </template>
@@ -243,6 +245,10 @@ export default {
                 background-color: #FD2D01;
                 color: white;
             }
+        }
+        label {
+            width: 0;
+            height: 0;
         }
     }
     &__replies {

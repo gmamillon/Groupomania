@@ -1,8 +1,11 @@
 <template>
     <form id="postForm" class="postForm">
-        <textarea id="textToPost" class="postForm__text"></textarea>
+        <label for="texte">texte</label>
+        <textarea id="textToPost" class="postForm__text" name="texte"></textarea>
+        <label for="files">fichiers</label>
         <input id="file" type="file" name="files" class="postForm__file" accept=".jpeg,.jpg,.png,.mp4,.avi" multiple>
-        <button @click.prevent="sendPost" class="postForm__button">Poster</button>
+        <label for="btnpost">poster</label>
+        <button @click.prevent="sendPost" name="btnpost" class="postForm__button">Poster</button>
     </form>
 </template>
 
@@ -45,7 +48,7 @@ export default {
     max-width: 780px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 5px;
     border-radius: 8px;
     box-shadow: 0px 2px 8px 4px #FFD7D7;
     &__text {
@@ -71,15 +74,20 @@ export default {
         align-items: center;
         border-radius: 6px;
         background-color: #FD2D01;
-        color: white;
+        color: black;
         font-size: 18px;
         border: 10px black;
         transition: 200ms ease-out;
         &:hover {
             background-color: white;
-            color: #FD2D01;
+            color: black;
             box-shadow: inset 1px 0px 4px black, 1px 0px 8px black;
         }
+    }
+    label {
+        width: 0;
+        height: 0;
+        opacity: 0;
     }
 }
 </style>

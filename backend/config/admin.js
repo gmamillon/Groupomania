@@ -5,7 +5,7 @@ const admin = async () => {
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash("adminPassword", salt);
     try {
-    const adminUser = await db.User.create({
+        await db.User.create({
             name: "Admin",
             email: "admin@email.dot",
             password: hash,

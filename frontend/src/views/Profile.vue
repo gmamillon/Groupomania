@@ -91,7 +91,7 @@ export default {
         justify-content: center;
         border-radius: 6px;
         background-color: #FD2D01;
-        color: white;
+        color: black;
         font-size: 18px;
         border: 10px black;
         transition: 200ms ease-out;
@@ -107,7 +107,7 @@ export default {
         cursor: pointer;
         border-radius: 6px;
         background-color: #FD2D01;
-        color: white;
+        color: black;
         font-size: 16px;
         border: 10px black;
         transition: 200ms ease-out;
