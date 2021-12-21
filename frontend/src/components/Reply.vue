@@ -4,7 +4,7 @@
             <img :src="reply.user.ppurl" :alt="'Photo de profil de ' + reply.user.name" class="reply__pp">
             {{reply.user.name}}
         </router-link>
-        <button v-if="reply.user.id == user.id || user.admin" @click.prevent="deleteReply" class="reply__delete"><i class="fas fa-trash"></i></button>
+        <button title="supprimer" v-if="reply.user.id == user.id || user.admin" @click.prevent="deleteReply" class="reply__delete"><i class="fas fa-trash"></i></button>
         <p class="reply__text">
             {{reply.content}}
         </p>

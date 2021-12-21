@@ -9,7 +9,7 @@
                     {{post.user.name}}
                 </router-link>
             </div>
-            <button v-if="post.user_id == user.id || user.admin" @click.prevent="deletePost" class="post__user__delete"><i class="fas fa-trash"></i></button>
+            <button title="supprimer" v-if="post.user_id == user.id || user.admin" @click.prevent="deletePost" class="post__user__delete"><i class="fas fa-trash"></i></button>
         </div>
         <div class="post__text">
             <p>{{post.content}}</p>
@@ -27,11 +27,11 @@
         <div v-if="repliesShown">
             <Reply v-for="reply in post.replies" :key="reply.id" :reply="reply" @deleteReply="deleteReply"/>
         </div>
-        <form class="post__reply">
-            <label for="reply">réponse</label>
+        <form id="replyform" class="post__reply">
+            <label :for="'reply' + post.id">réponse</label>
             <input :id="'reply' + post.id" type="text" placeholder="Votre réponse" name="reply" class="post__reply__input">
-            <label for="btn">envoyer la réponse</label>
-            <button class="post__reply__btn" name="btn" @click.prevent="sendReply">Envoyer</button>
+            <label for="replybtn">envoyer la réponse</label>
+            <button id="replybtn" class="post__reply__btn" name="btn" @click.prevent="sendReply">Envoyer</button>
         </form>
     </div>
 </template>
@@ -190,12 +190,12 @@ export default {
         border: none;
         border-top: 4px solid #FFD7D7;
         background-color: white;
-        color: #FD2D01;
+        color: black;
         font-size: 18px;
         transition: 200ms ease-out;
         &:hover {
             background-color: #FD2D01;
-            color: white;
+            color: black;
         }
     }
     &__media {
@@ -238,12 +238,11 @@ export default {
             border-radius: 8px;
             border: none;
             background-color: white;
-            color: #FD2D01;
+            color: black;
             font-size: 18px;
             transition: 200ms ease-out;
             &:hover {
                 background-color: #FD2D01;
-                color: white;
             }
         }
         label {

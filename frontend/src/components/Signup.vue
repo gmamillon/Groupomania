@@ -1,6 +1,6 @@
 <template>
     <div class="fog">
-        <form class="logger">
+        <form id="signup" class="logger">
             <img class="logger__logo" src="../assets/icon.svg" alt="Logo Groupomania">
             <label for="name">nom</label>
             <input id="name" type="text" placeholder="Nom d'utilisateur">
@@ -8,8 +8,8 @@
             <input id="email" type="text" placeholder="Email" name="email">
             <label for="password">mot de passe</label>
             <input id="password" type="password" placeholder="Mot de passe" name="password">
-            <label for="btn">s'inscrire</label>
-            <button class="logger__btn" @click.prevent="signup" name="btn">S'inscrire</button>
+            <label for="signupbtn">s'inscrire</label>
+            <button id="signupbtn" class="logger__btn" @click.prevent="signup" name="btn">S'inscrire</button>
             <p>Vous possédez déjà un compte ? <router-link to="/">connectez vous !</router-link></p>
         </form>
     </div>

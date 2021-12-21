@@ -1,11 +1,11 @@
 <template>
     <form id="postForm" class="postForm">
-        <label for="texte">texte</label>
+        <label for="textToPost">texte</label>
         <textarea id="textToPost" class="postForm__text" name="texte"></textarea>
-        <label for="files">fichiers</label>
+        <label for="file">fichiers</label>
         <input id="file" type="file" name="files" class="postForm__file" accept=".jpeg,.jpg,.png,.mp4,.avi" multiple>
-        <label for="btnpost">poster</label>
-        <button @click.prevent="sendPost" name="btnpost" class="postForm__button">Poster</button>
+        <label for="postbtn">poster</label>
+        <button id="postbtn" @click.prevent="sendPost" name="btnpost" class="postForm__button">Poster</button>
     </form>
 </template>
 

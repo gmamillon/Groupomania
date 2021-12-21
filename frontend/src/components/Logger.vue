@@ -1,13 +1,13 @@
 <template>
     <div class="fog">
-        <form class="logger" method="POST">
+        <form id="logger" class="logger" method="POST">
             <img class="logger__logo" src="../assets/icon.svg" alt="Logo Groupomania">
             <label for="email">e-mail</label>
             <input id="email" type="text" name="email" placeholder="email">
             <label for="password">mot de passe</label>
             <input id="password" type="password" placeholder="mot de passe" name="password">
-            <label for="connect">connexion</label>
-            <button class="logger__btn" @click.prevent="login" name="connect">Se connecter</button>
+            <label for="loggerbtn">connexion</label>
+            <button id="loggerbtn" class="logger__btn" @click.prevent="login" name="connect">Se connecter</button>
             <router-link class="logger__btn" to="/signup" title="Page d'inscription">S'inscrire</router-link>
         </form>
     </div>
