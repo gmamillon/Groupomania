@@ -24,4 +24,4 @@ npm install
 
 npm run serve
 
-alller à localhost:8080 pour ouvrir l'application.
+aller à l'addresse localhost:8080 pour ouvrir l'application.
